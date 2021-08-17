@@ -1,20 +1,21 @@
 #pragma once
-#include "common.hpp"
 #include <string>
-
-#ifndef CONSTEVAL
-#  define CONSTEVAL
-#endif // !CONSTEVAL
+#include "source_location/common.h"
+#include "source_location/marco.h"
 
 namespace lite
 {
+#ifdef _WIN32
     typedef unsigned __int32 uint_least32_t;
+#else
+    typedef unsigned int uint_least32_t;
+#endif
 
-    struct source_location {
-        static CONSTEVAL source_location current() NOEXCEPT
-        {
-            return source_location();
-        }
+    struct source_location
+    {
+        //static CONSTEVAL source_location current() NOEXCEPT;
+
+        ~source_location() {}
 
         source_location(const source_location& other)
         {
@@ -72,8 +73,3 @@ namespace lite
         std::string m_function_name;
     };
 }
-
-#ifndef SOURCE_LOCATION_CURRENT
-#  define SOURCE_LOCATION_CURRENT() lite::source_location(__LINE__, 0, __FILE__, __FUNCTION__)
-#endif // !SOURCE_LOCATION_CURRENT
-
